@@ -99,6 +99,14 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 		sprintf(npath, "%s.ditandai", fpath);
 		rename(fpath, npath);
 
+		if (opendir(fpath) == NULL)
+			system("mkdir /home/haimax/Documents/rahasia");
+		char com[1000];
+		sprintf(com, "chmod 000 %s", npath);
+		system(com);
+		sprintf(com, "mv %s /home/haimax/Documents/rahasia", npath);
+		system(com);
+
 		system("zenity --error --text=\"Terjadi Kesalahan! File berisi konten berbahaya.\n\" --title=\"Warning!\"");
 
 		return -1;
