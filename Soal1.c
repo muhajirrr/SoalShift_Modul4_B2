@@ -7,8 +7,33 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <regex.h>
 
 static const char *dirpath = "/home/haimax/Documents";
+
+int isDanger(const char *filename) {
+	regex_t pdf, txt, doc;
+
+	regcomp(&pdf, "pdf$", 0);
+	regcomp(&txt, "txt$", 0);
+	regcomp(&doc, "doc$", 0);
+
+	if ((regexec(&pdf, filename, 0, NULL, 0) == 0) || (regexec(&txt, filename, 0, NULL, 0) == 0)
+		|| (regexec(&doc, filename, 0, NULL, 0) == 0))
+	{
+		regfree(&pdf);
+		regfree(&txt);
+		regfree(&doc);
+
+		return 1;
+	} else {
+		regfree(&pdf);
+		regfree(&txt);
+		regfree(&doc);
+
+		return 0;
+	}
+}
 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
